@@ -19,7 +19,7 @@ mkdir -p "${tmp_dir}"
 cd "${tmp_dir}"
 
 $update
-apt upgrade -y
+sudo apt upgrade -y
 
 if ! [ -e /usr/lib/snapd ] ; then
 	$install snapd
@@ -64,7 +64,7 @@ echo "
 alias libinput-gestures-update='cd ~/.libinput-gestures && git pull && sudo make install && libinput-gestures-setup restart'" >> "${home}/.zshrc"
 
 $update
-apt autoremove -y --purge
+sudo apt autoremove -y --purge
 
 rm -rf "${tmp_dir}"
 updatedb
