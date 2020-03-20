@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 
+set -e
+
 user=$(logname)
 home=$HOME
 script_name=`basename "$0"`
 tmp_dir="/tmp/auto-install/"
-install="apt install -y"
-update="apt update -y"
+install="sudo apt install -y"
+update="sudo apt update -y"
 
 # check if script run via sudo but not as su
 if [[ -z $SUDO_USER || $EUID -eq 0 ]]; then
@@ -26,8 +28,8 @@ fi
 $install mlocate moreutils htop curl wget jq unzip git gnome-tweaks xclip
 
 $install zsh
-chsh -s $(which zsh)
 # TODO: check this works when run as su
+chsh -s $(which zsh)
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
 $install tmux
