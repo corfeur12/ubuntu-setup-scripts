@@ -51,6 +51,7 @@ $install python3-dev python3-pip build-essential libssl-dev libffi-dev python3-s
 
 $install gedit
 
+# TODO: check if device needs this or not
 gpasswd -a $user input
 libinput_gestures_dir="${home}/.libinput-gestures"
 $install xdotool wmctrl libinput-tools
@@ -67,4 +68,4 @@ $update
 sudo apt autoremove -y --purge
 
 rm -rf "${tmp_dir}"
-updatedb
+sudo updatedb
