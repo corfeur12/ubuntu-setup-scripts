@@ -25,7 +25,7 @@ if ! [ -e /usr/lib/snapd ] ; then
 	$install snapd
 fi
 
-$install mlocate moreutils htop curl wget jq unzip git gnome-tweaks xclip
+$install locate moreutils htop curl wget jq unzip git gnome-tweaks xclip
 
 $install zsh
 # TODO: check this works when run as su
@@ -34,13 +34,22 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 
 $install tmux
 $install fonts-powerline
-git clone https://github.com/samoshkin/tmux-config.git
+git clone https://github.com/mohitt/tmux-config.git
 # TODO: check this works when run as su
 ./tmux-config/install.sh
 rm -rf ./tmux-config
 echo "
-if [[ ! $TERM =~ screen ]]; then
-    exec tmux
+PATH="$PATH:$HOME/.local/bin/"
+
+tabs 4
+
+if command -v tmux &> /dev/null && [ -n "$PS1"  ] && [[ ! "$TERM" =~ screen  ]] && [[ ! "$TERM" =~ tmux  ]] && [ -z "$TMUX"  ]; then
+    attach_session=$(tmux 2> /dev/null ls -F '#{session_attached} #{?#{==:#{session_last_attached},},1,#{session_last_attached}} #{session_id}' | awk '/^0/ { if ([ > t) { t = [; s = { } }; END { if (s) printf "%s", s  }')
+    if [ -n "$attach_session"   ]; then
+        exec tmux attach -t "$attach_session"
+    else
+        exec tmux
+    fi
 fi" >> "${home}/.zshrc"
 
 $install ubuntu-restricted-extras
